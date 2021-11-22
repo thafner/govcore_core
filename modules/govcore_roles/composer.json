@@ -1,5 +1,5 @@
 {
-    "name": "drupal/govcore_roles",
+    "name": "govcore/govcore_roles",
     "type": "drupal-module",
     "description": "Automatically manages user roles and permissions."
 }
