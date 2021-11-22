@@ -1,0 +1,7 @@
+govcore_core.settings:
+  path: '/admin/config/system/govcore'
+  defaults:
+    _title: GovCore
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+  requirements:
+    _is_administrator: 'true'

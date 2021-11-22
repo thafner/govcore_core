@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * Contains hook implementations for GovCore Roles.
+ */
+
+use Drupal\node\NodeTypeInterface;
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function govcore_roles_node_type_insert(NodeTypeInterface $node_type) {
+  // Don't do anything during config sync.
+  if (\Drupal::isConfigSyncing()) {
+    return;
+  }
+
+  $config = \Drupal::config('govcore_roles.settings')->get('content_roles');
+  if (empty($config)) {
+    return;
+  }
+
+  $permission_map = function ($permission) use ($node_type) {
+    return str_replace('?', $node_type->id(), $permission);
+  };
+
+  $storage = Drupal::entityTypeManager()->getStorage('user_role');
+
+  foreach ($config as $key => $info) {
+    if (empty($info['enabled'])) {
+      continue;
+    }
+    $role_id = $node_type->id() . '_' . $key;
+
+    $role = $storage->load($role_id) ?: $storage->create([
+      'id' => $role_id,
+      'label' => str_replace('?', $node_type->label(), $info['label']),
+      'is_admin' => FALSE,
+    ]);
+
+    // Only grant permissions the role does not already have.
+    $permissions = array_diff(
+      array_map($permission_map, $info['permissions']),
+      $role->getPermissions()
+    );
+
+    array_walk($permissions, [$role, 'grantPermission']);
+    $role->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function govcore_roles_node_type_delete(NodeTypeInterface $node_type) {
+  // Don't do anything during config sync.
+  if (\Drupal::isConfigSyncing()) {
+    return;
+  }
+
+  $config = \Drupal::config('govcore_roles.settings')->get('content_roles');
+  $storage = Drupal::entityTypeManager()->getStorage('user_role');
+
+  foreach (array_keys($config) as $key) {
+    $role = $storage->load($node_type->id() . '_' . $key);
+    if ($role) {
+      $role->delete();
+    }
+  }
+}

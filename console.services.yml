@@ -1,0 +1,7 @@
+services:
+  govcore.command.update:
+    class: '\Drupal\govcore_core\Command\UpdateCommand'
+    arguments:
+      - '@govcore.update_manager'
+    tags:
+      - { name: drupal.command }

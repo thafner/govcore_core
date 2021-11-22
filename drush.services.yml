@@ -1,0 +1,16 @@
+services:
+  govcore_core.hooks:
+    class: '\Drupal\govcore_core\Commands\Hooks'
+    arguments:
+      - '@extension.list.profile'
+      - '%install_profile%'
+      - '@plugin.cache_clearer'
+    tags:
+      - { name: drush.command }
+
+  govcore_core.commands:
+    class: \Drupal\govcore_core\Commands\GovCoreCoreCommands
+    arguments:
+      - '@govcore.update_manager'
+    tags:
+      - { name: drush.command }

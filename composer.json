@@ -1,0 +1,125 @@
+{
+    "name": "govcore/govcore_core",
+    "type": "drupal-module",
+    "description": "Shared functionality for the GovCore distribution.",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "drupal/acquia_telemetry-acquia_telemetry": "^1.0-alpha3",
+        "drupal/contact_storage": "^1.0",
+        "drupal/core": "^8.8.6 || ^9.0.1",
+        "drupal/metatag": "^1.13",
+        "drupal/pathauto": "^1.8",
+        "drupal/redirect": "^1.5",
+        "drupal/search_api": "^1.16",
+        "drupal/token": "^1.7",
+        "phpdocumentor/reflection-docblock": "^5"
+    },
+    "conflict": {
+        "drupal/drupal-extension": "<3.4.0"
+    },
+    "require-dev": {
+        "acquia/coding-standards": "^0.4.1",
+        "composer/installers": "^1.9",
+        "cweagans/composer-patches": "^1.6",
+        "drupal/core-composer-scaffold": "*",
+        "drupal/core-dev": "*",
+        "drush/drush": ">=9.7",
+        "phpspec/prophecy-phpunit": "^2",
+        "symfony/options-resolver": ">=4",
+        "vijaycs85/drupal-quality-checker": "^1.0"
+    },
+    "config": {
+        "preferred-install": {
+            "drupal/core": "dist",
+            "drush/drush": "dist"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-8.x-5.x": "5.x-dev"
+        },
+        "drupal-scaffold": {
+            "file-mapping": {
+                "[project-root]/.editorconfig": false,
+                "[project-root]/.gitattributes": false,
+                "[web-root]/.csslintrc": false,
+                "[web-root]/INSTALL.txt": false,
+                "[web-root]/example.gitignore": false,
+                "[web-root]/modules/README.txt": false,
+                "[web-root]/profiles/README.txt": false,
+                "[web-root]/robots.txt": false,
+                "[web-root]/sites/README.txt": false,
+                "[web-root]/themes/README.txt": false,
+                "[web-root]/web.config": false
+            },
+            "locations": {
+                "web-root": "docroot/"
+            }
+        },
+        "drush": {
+            "services": {
+                "drush.services.yml": "^9 || ^10"
+            }
+        },
+        "enable-patching": true,
+        "installer-paths": {
+            "docroot/core": [
+                "type:drupal-core"
+            ],
+            "docroot/libraries/{$name}": [
+                "type:drupal-library"
+            ],
+            "docroot/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "docroot/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "docroot/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ]
+        },
+        "patches": {
+            "drupal/core": {
+                "2869592 - Disabled update module shouldn't produce a status report warning": "https://www.drupal.org/files/issues/2869592-remove-update-warning-7.patch"
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Drupal\\Tests\\govcore_core\\": "tests/src"
+        },
+        "classmap": [
+            "tests/contexts"
+        ]
+    },
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        "assets": {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-install-cmd": [
+            "@putenv DIR=./docroot/modules/govcore_core",
+            "mkdir -p $DIR",
+            "ln -s -f $PWD/config $DIR",
+            "ln -s -f $PWD/css $DIR",
+            "ln -s -f $PWD/drush.services.yml $DIR",
+            "ln -s -f $PWD/images $DIR",
+            "ln -s -f $PWD/modules $DIR",
+            "ln -s -f $PWD/src $DIR",
+            "ln -s -f $PWD/tests $DIR",
+            "find $PWD -name 'govcore_core.*' -depth 1 -exec ln -s -f {} $DIR ';'",
+            "cp -f phpunit.xml ./docroot/core"
+        ],
+        "log": "ls -t ./logs/*.md | xargs -I{} sh -c \"cat {}; echo ''\" > CHANGELOG.md",
+        "nuke": "rm -r -f docroot vendor"
+    }
+}

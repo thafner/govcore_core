@@ -1,0 +1,5 @@
+govcore_core.settings:
+  title: GovCore
+  description: Various settings for altering the behavior of GovCore modules.
+  parent: system.admin_config_system
+  route_name: govcore_core.settings
