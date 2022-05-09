@@ -1,0 +1,8 @@
+uuid: 8e511358-1471-4732-b388-d353ddf046ea
+langcode: en
+status: true
+dependencies: {  }
+id: date_and_time_short
+label: 'Date and Time Short'
+locked: false
+pattern: 'n/j/Y • g:ia'

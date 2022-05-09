@@ -1,5 +1,0 @@
-govcore_roles.settings:
-  title: 'Roles'
-  description: 'Configure GovCore Roles settings.'
-  parent: govcore_core.settings
-  route_name: govcore_roles.settings

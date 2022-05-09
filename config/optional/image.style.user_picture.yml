@@ -1,0 +1,28 @@
+uuid: c97fda7d-9585-4ff5-818d-9846f4898ac4
+langcode: en
+status: true
+dependencies:
+  config:
+    - crop.type.one_to_one
+  module:
+    - crop
+    - image_effects
+name: user_picture
+label: 'User Picture'
+effects:
+  e792d941-f048-4224-b630-bbf542742367:
+    uuid: e792d941-f048-4224-b630-bbf542742367
+    id: crop_crop
+    weight: 1
+    data:
+      crop_type: one_to_one
+  0a8e527d-6323-4b2d-aa62-5a87ab17cf0d:
+    uuid: 0a8e527d-6323-4b2d-aa62-5a87ab17cf0d
+    id: image_effects_scale_and_smart_crop
+    weight: 2
+    data:
+      width: '300'
+      height: '300'
+      upscale: true
+      simulate: false
+      algorithm: entropy_slice

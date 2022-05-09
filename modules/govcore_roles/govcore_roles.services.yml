@@ -1,6 +1,0 @@
-services:
-  govcore.content_roles:
-    class: '\Drupal\govcore_roles\ContentRoleManager'
-    arguments:
-      - '@config.factory'
-      - '@entity_type.manager'

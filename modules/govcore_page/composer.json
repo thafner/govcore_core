@@ -1,5 +1,5 @@
 {
     "name": "govcore/govcore_page",
     "type": "drupal-module",
-    "description": "Provides a \"Basic Page\" content type that is, indeed, very basic."
+    "description": "Provides a generic \"Page\" content type."
 }

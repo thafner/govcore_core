@@ -30,7 +30,7 @@ function govcore_core_requirements() {
  * Implements hook_install().
  */
 function govcore_core_install() {
-  // Don't do anything during config sync.
+  // Dont do anything during config sync.
   if (\Drupal::isConfigSyncing()) {
     return;
   }
@@ -111,7 +111,7 @@ function govcore_core_update_8005() {
 }
 
 /**
- * Records all modules' semantic version numbers in config.
+ * Records all modules semantic version numbers in config.
  */
 function govcore_core_update_8006() {
   $modules = Drupal::moduleHandler()->getModuleList();

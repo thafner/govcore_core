@@ -11,7 +11,4 @@ dependencies:
   - drupal:text
   - drupal:user
 components:
-  - govcore_contact_form
   - govcore_page
-  - govcore_roles
-  - govcore_search

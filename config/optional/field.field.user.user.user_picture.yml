@@ -11,14 +11,14 @@ field_name: user_picture
 entity_type: user
 bundle: user
 label: Picture
-description: 'Your virtual face or picture.'
+description: 'Your profile photo.'
 required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
   file_extensions: 'png gif jpg jpeg'
-  file_directory: 'pictures/[date:custom:Y]-[date:custom:m]'
+  file_directory: 'images/picture/[date:custom:Y]-[date:custom:m]'
   max_filesize: ''
   alt_field: false
   title_field: false

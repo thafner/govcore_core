@@ -1,9 +1,9 @@
-name: 'Basic Page'
+name: 'Page'
 package: GovCore
 core: 8.x
 core_version_requirement: '^8 || ^9'
 type: module
-description: 'Provides a "Basic Page" content type that is, indeed, very basic.'
+description: 'Provides a generic Page content type.'
 dependencies:
   - govcore_core:govcore_core
   - drupal:node
