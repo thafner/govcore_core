@@ -1,0 +1,7 @@
+services:
+  govcore_scheduler.migration_commands:
+    class: \Drupal\govcore_scheduler\Commands\MigrationCommands
+    arguments:
+      - '@govcore_scheduler.migrator'
+    tags:
+      - { name: drush.command }

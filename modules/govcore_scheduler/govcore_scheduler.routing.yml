@@ -1,0 +1,15 @@
+govcore_scheduler.migrate:
+  path: '/admin/config/system/govcore/scheduler/migrate'
+  defaults:
+    _title: 'Migrate scheduled transitions'
+    _form: '\Drupal\govcore_scheduler\Form\MigrationConfirmationForm'
+  requirements:
+    _custom_access: '\Drupal\govcore_scheduler\Form\MigrationConfirmationForm::access'
+
+govcore_scheduler.settings:
+  path: '/admin/config/system/govcore/scheduler'
+  defaults:
+    _title: GovCore Scheduler
+    _form: '\Drupal\govcore_scheduler\Form\SettingsForm'
+  requirements:
+    _is_administrator: 'true'

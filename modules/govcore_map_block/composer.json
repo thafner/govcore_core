@@ -1,0 +1,5 @@
+{
+    "name": "govcore/govcore_map_block",
+    "type": "drupal-module",
+    "description": "Provides a block type which embeds a Google map."
+}

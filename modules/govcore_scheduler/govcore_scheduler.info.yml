@@ -1,0 +1,11 @@
+name: Scheduler
+core: 8.x
+core_version_requirement: '^8 || ^9'
+type: module
+description: 'Allows you to schedule changes in moderation state.'
+package: GovCore
+configure: govcore_scheduler.settings
+dependencies:
+  - drupal:content_moderation
+  - drupal:datetime
+  - govcore_core:govcore_core

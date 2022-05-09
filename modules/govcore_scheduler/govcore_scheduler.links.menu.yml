@@ -1,0 +1,5 @@
+govcore_scheduler.settings:
+  title: 'Scheduler'
+  description: 'Configure GovCore Scheduler settings.'
+  parent: govcore_core.settings
+  route_name: govcore_scheduler.settings

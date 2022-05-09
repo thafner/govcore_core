@@ -1,0 +1,10 @@
+name: 'Map block'
+package: GovCore
+core: 8.x
+core_version_requirement: '^8 || ^9'
+type: module
+description: 'Provides a block type which embeds a Google map.'
+dependencies:
+  - drupal:block_content
+  - govcore_layout:govcore_layout
+  - simple_gmap:simple_gmap
