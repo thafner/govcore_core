@@ -1,0 +1,11 @@
+uuid: 122efdc0-e316-45e5-9efe-0f62f286ef30
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.notice
+id: node.notice
+target_entity_type_id: node
+target_bundle: notice
+default_langcode: site_default
+language_alterable: false

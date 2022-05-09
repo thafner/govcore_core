@@ -1,0 +1,11 @@
+uuid: 92ef6ddc-7d86-4dfe-885a-a77244d72b9a
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.cms_guide
+id: node.cms_guide
+target_entity_type_id: node
+target_bundle: cms_guide
+default_langcode: site_default
+language_alterable: false

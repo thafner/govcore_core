@@ -1,0 +1,20 @@
+uuid: e4b2fd2a-4cb5-4bcf-b5a9-0a5ed59bc22e
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+_core:
+  default_config_hash: nb_cPUs4dvoXeLvPMQYwg1oWcQ5-nE7TcwKGs_VsiHg
+name: Page
+type: page
+description: 'Use <em> pages</em> for your static content, such as an ''About us'' page.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

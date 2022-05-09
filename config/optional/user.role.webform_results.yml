@@ -1,0 +1,13 @@
+uuid: da26db23-0723-411a-b881-f4f904297a7a
+langcode: en
+status: true
+dependencies: {  }
+id: webform_results
+label: 'Webform Results'
+weight: -3
+is_admin: null
+permissions:
+  - 'view any webform submission'
+  - 'view own webform submission'
+  - 'view webform submissions any node'
+  - 'view webform submissions own node'

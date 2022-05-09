@@ -1,0 +1,32 @@
+uuid: 994051a0-038f-4326-99eb-a9df8c4d0939
+langcode: en
+status: true
+dependencies:
+  module:
+    - blazy
+name: 'Full HTML'
+format: full_html
+weight: -8
+filters:
+  blazy_filter:
+    id: blazy_filter
+    provider: blazy
+    status: false
+    weight: 3
+    settings:
+      filter_tags:
+        img: img
+        iframe: iframe
+      media_switch: ''
+      box_style: ''
+      hybrid_style: ''
+      use_data_uri: '0'
+      box_caption: ''
+  slick_filter:
+    id: slick_filter
+    provider: slick
+    status: false
+    weight: 4
+    settings:
+      optionset: default
+      media_switch: ''

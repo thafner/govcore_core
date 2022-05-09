@@ -1,3 +1,4 @@
+uuid: 172a4604-6631-4b8e-8e5e-45278475c05f
 langcode: en
 status: true
 dependencies:
@@ -8,6 +9,8 @@ dependencies:
   module:
     - image
     - user
+_core:
+  default_config_hash: LFiVW93xRjd2WXEzCIHJNunpVtNZu6aOeNPX4le0lTI
 id: user.user.compact
 targetEntityType: user
 bundle: user
@@ -32,3 +35,4 @@ content:
     label: hidden
 hidden:
   member_for: true
+  search_api_excerpt: true
