@@ -6,5 +6,4 @@ type: module
 description: 'Provides a block type which embeds a Google map.'
 dependencies:
   - drupal:block_content
-  - govcore_layout:govcore_layout
   - simple_gmap:simple_gmap

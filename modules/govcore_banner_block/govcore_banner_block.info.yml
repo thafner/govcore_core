@@ -9,5 +9,4 @@ dependencies:
   - drupal:block_content
   - drupal:image
   - drupal:link
-  - govcore_layout:govcore_layout
   - token:token

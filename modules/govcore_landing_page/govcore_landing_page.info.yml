@@ -1,9 +1,0 @@
-name: 'Landing page'
-package: GovCore
-core: 8.x
-core_version_requirement: '^8 || ^9'
-type: module
-description: 'Provides a content type which allows you to build free-form one-off landing pages.'
-dependencies:
-  - drupal:node
-  - govcore_core:govcore_core
