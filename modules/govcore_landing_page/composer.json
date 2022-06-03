@@ -1,0 +1,5 @@
+{
+    "name": "govcore/govcore_landing_page",
+    "type": "drupal-module",
+    "description": "Provides a \"Landing Page\" content type."
+}

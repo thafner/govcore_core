@@ -33,7 +33,7 @@ class DefaultUserImageTest extends KernelTestBase {
       'image',
     ]);
 
-    $this->assertFileExists('public://default-avatar.png');
+    $this->assertFileExists('public://default-avatar.jpg');
     $config = FieldConfig::load('user.user.user_picture');
     $setting = $config->getSetting('default_image');
     $this->assertNotEmpty($setting['uuid']);
@@ -47,7 +47,7 @@ class DefaultUserImageTest extends KernelTestBase {
    * Tests that the default avatar is not set if the image already exists.
    */
   public function testAlreadyExists() {
-    file_put_contents('public://default-avatar.png', '');
+    file_put_contents('public://default-avatar.jpg', '');
 
     \Drupal::service('module_installer')->install([
       'govcore_core',
