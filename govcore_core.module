@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityDescriptionInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Extension\Extension;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -26,7 +27,9 @@ use Drupal\govcore_core\Form\RoleForm;
 use Drupal\govcore_core\OverrideHelper as Override;
 use Drupal\govcore_core\Plugin\views\filter\Bundle;
 use Drupal\govcore_core\UpdateManager;
-
+use Drupal\Core\Extension\ModuleExtensionList;
+use Drupal\Core\Extension\ExtensionList;
+use Drupal\Core\Extension\ExtensionDiscovery;
 /**
  * Implements hook_entity_base_field_info_alter().
  */
@@ -310,6 +313,31 @@ function govcore_core_form_alter(array &$form, FormStateInterface $form_state) {
       $form['revision_information']['#access'] = $form_mode->getThirdPartySetting('govcore_core', 'revision_ui', TRUE);
     }
   }
+}
+
+/*
+ * Implements hook_system_info_alter()
+ *
+ * Sets $info['hidden'] to TRUE if module should not be listed.
+ */
+function govcore_core_system_info_alter(&$info, $file, $type) {
+
+  if ($type != 'module') {
+    return;
+  }
+
+  $profile = \Drupal::service('config.factory')->get('core.extension')->get('profile');
+
+  if ($profile = 'cookcounty') {
+    if($info['package'] === 'Lightning'){
+      $info['hidden'] = TRUE;
+    }
+  } elseif ($profile = 'sfprofile')  {
+    if($info['package'] === 'Govcore'){
+      $info['hidden'] = TRUE;
+    }
+  }
+
 }
 
 /**
