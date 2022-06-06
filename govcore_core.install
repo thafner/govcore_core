@@ -39,7 +39,7 @@ function govcore_core_install() {
   $modules = array_keys(\Drupal::moduleHandler()->getModuleList());
   array_push($modules, 'govcore_core');
   govcore_core_modules_installed($modules);
-  govcore_core_rebuild_container();
+
   // Mark core view modes as internal.
   govcore_core_update_8002();
 }

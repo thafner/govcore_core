@@ -5,8 +5,6 @@ dependencies:
     - block_content.type.google_map
     - field.field.block_content.google_map.field_map_location
   module:
-    - layout_builder
-    - layout_discovery
     - simple_gmap
 id: block_content.google_map.default
 targetEntityType: block_content

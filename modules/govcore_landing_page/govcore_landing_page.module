@@ -10,24 +10,34 @@ use Drupal\Core\Plugin\ObjectWithPluginCollectionInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\node\Entity\NodeType;
 use Drupal\workflows\WorkflowInterface;
+use Drupal\node\NodeTypeInterface;
+
 
 /**
  * Implements hook_modules_installed().
  */
-function govcore_landing_page_modules_installed(array $modules) {
+function govcore_landing_page_modules_installed(array $modules)
+{
   if (Drupal::isConfigSyncing()) {
     return;
   }
-
-  $node_type = NodeType::load('landing_page');
-  govcore_core_node_type_insert($node_type);
-
 
   if (in_array('menu_ui', $modules, TRUE)) {
     NodeType::load('landing_page')
       ->setThirdPartySetting('menu_ui', 'available_menus', ['main'])
       ->setThirdPartySetting('menu_ui', 'parent', 'main:')
       ->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function govcore_landing_page_node_type_insert(NodeTypeInterface $node_type)
+{
+  // Don't do anything during a config sync.
+  if (Drupal::isConfigSyncing()) {
+    return;
   }
 }
 

@@ -20,7 +20,7 @@ content:
     weight: 4
     settings:
       progress_indicator: throbber
-      preview_image_style: thumbnail
+      preview_image_style: crop_four_one
     third_party_settings: {  }
     type: image_image
     region: content

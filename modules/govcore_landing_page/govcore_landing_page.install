@@ -12,7 +12,6 @@ function govcore_landing_page_install() {
   $modules = [
     'govcore_workflow',
     'menu_ui',
-    'metatag',
   ];
 
   $modules = array_filter($modules, [Drupal::moduleHandler(), 'moduleExists']);
