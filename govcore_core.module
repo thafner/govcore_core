@@ -26,6 +26,10 @@ use Drupal\govcore_core\Form\RoleForm;
 use Drupal\govcore_core\OverrideHelper as Override;
 use Drupal\govcore_core\Plugin\views\filter\Bundle;
 use Drupal\govcore_core\UpdateManager;
+use Drupal\node\Entity\NodeType;
+use Drupal\search_api\Entity\Index;
+use Drupal\views\ViewEntityInterface;
+use Drupal\views\Entity\View;
 
 /**
  * Implements hook_entity_base_field_info_alter().
@@ -402,7 +406,7 @@ function govcore_core_field_config_presave(FieldConfigInterface $field) {
 /**
  * Implements hook_ENTITY_TYPE_insert().
  */
-function govcore_core_node_type_insert(NodeTypeInterface $node_type) {
+function govcore_core_node_type_insert(NodeType $node_type) {
   // Don't do anything during config sync.
   if (\Drupal::isConfigSyncing()) {
     return;
