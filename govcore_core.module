@@ -406,7 +406,7 @@ function govcore_core_field_config_presave(FieldConfigInterface $field) {
 /**
  * Implements hook_ENTITY_TYPE_insert().
  */
-function govcore_core_node_type_insert(NodeType $node_type) {
+function govcore_core_node_type_insert($node_type) {
   // Don't do anything during config sync.
   if (\Drupal::isConfigSyncing()) {
     return;
