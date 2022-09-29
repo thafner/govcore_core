@@ -21,7 +21,8 @@ class OverrideHelper {
    *   The class to use.
    */
   public static function pluginClass(array &$plugin_definition, $replacement_class) {
-    if (get_parent_class($replacement_class) == $plugin_definition['class']) {
+    $parent = class_parents($replacement_class);
+    if ($parent == $plugin_definition['class']) {
       $plugin_definition['class'] = $replacement_class;
     }
   }
