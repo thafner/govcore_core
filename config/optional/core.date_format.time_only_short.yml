@@ -1,8 +1,0 @@
-uuid: fd40a713-2fa7-4e80-9e15-7dcaceb2d125
-langcode: en
-status: true
-dependencies: {  }
-id: time_only_short
-label: 'Time Only Short'
-locked: false
-pattern: 'g:ia'

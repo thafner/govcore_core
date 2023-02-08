@@ -1,6 +1,5 @@
 name: 'GovCore Core'
-core: 8.x
-core_version_requirement: '^8 || ^9'
+core_version_requirement: '^9.3 || ^10'
 type: module
 package: GovCore
 description: 'Shared functionality for the GovCore distribution.'
@@ -11,4 +10,7 @@ dependencies:
   - drupal:text
   - drupal:user
 components:
+  - govcore_contact_form
   - govcore_page
+  - govcore_roles
+  - govcore_search

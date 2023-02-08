@@ -26,10 +26,6 @@ use Drupal\govcore_core\Form\RoleForm;
 use Drupal\govcore_core\OverrideHelper as Override;
 use Drupal\govcore_core\Plugin\views\filter\Bundle;
 use Drupal\govcore_core\UpdateManager;
-use Drupal\node\Entity\NodeType;
-use Drupal\search_api\Entity\Index;
-use Drupal\views\ViewEntityInterface;
-use Drupal\views\Entity\View;
 
 /**
  * Implements hook_entity_base_field_info_alter().
@@ -58,9 +54,19 @@ function govcore_core_local_tasks_alter(array &$local_tasks) {
  */
 function govcore_core_library_info_alter(array &$libraries, $extension) {
   if ($extension == 'seven') {
-    $url = drupal_get_path('module', 'govcore_core') . '/css/admin-list.grid.css';
-    $url = file_create_url($url);
-    $url = file_url_transform_relative($url);
+    $url = Drupal::service('extension.list.module')->getPath('govcore_core') . '/css/admin-list.grid.css';
+    if (\Drupal::hasService('file_url_generator')) {
+      $file_url_generator = Drupal::service('file_url_generator');
+      $url = $file_url_generator->generateAbsoluteString($url);
+      $url = $file_url_generator->transformRelative($url);
+    }
+    else {
+      // @todo Drop this code when Drupal 9.3 is the minimum supported version of core.
+      /** @phpstan-ignore-next-line */
+      $url = file_create_url($url);
+      /** @phpstan-ignore-next-line */
+      $url = file_url_transform_relative($url);
+    }
 
     $libraries['global-styling']['css']['component'][$url] = [];
   }
@@ -100,6 +106,8 @@ function govcore_core_contextual_links_plugins_alter(array &$contextual_links) {
       'id' => 'block_content.block_edit_latest_version',
       'class' => $class,
       'provider' => 'block_content',
+      'options' => [],
+      'weight' => 0,
     ];
   }
   if ($module_handler->moduleExists('taxonomy')) {
@@ -108,6 +116,7 @@ function govcore_core_contextual_links_plugins_alter(array &$contextual_links) {
       'group' => 'taxonomy_term_latest_version',
       'route_name' => 'entity.taxonomy_term.edit_form',
       'weight' => 10,
+      'options' => [],
       'id' => 'entity.taxonomy_term.latest_version_edit_form',
       'class' => $class,
       'provider' => 'taxonomy',
@@ -121,6 +130,8 @@ function govcore_core_contextual_links_plugins_alter(array &$contextual_links) {
       'id' => 'entity.node.latest_version_edit_form',
       'class' => $class,
       'provider' => 'node',
+      'options' => [],
+      'weight' => 0,
     ];
   }
 }
@@ -353,34 +364,10 @@ function govcore_core_preprocess_block(array &$variables) {
  * Implements hook_ENTITY_TYPE_presave().
  */
 function govcore_core_field_config_presave(FieldConfigInterface $field) {
-  // Set the default image for user accounts.
-  if ($field->getTargetEntityTypeId() === 'user' && $field->getName() === 'user_picture' && $field->isNew() && !\Drupal::isConfigSyncing()) {
-    $source = drupal_get_path('module', 'govcore_core') . '/images/default-avatar.jpg';
-    $uri = 'public://default-avatar.jpg';
-
-    try {
-      \Drupal::service('file_system')->copy($source, $uri, FileSystemInterface::EXISTS_ERROR);
-
-      $file = File::create(['uri' => $uri]);
-      $file->setPermanent();
-      $file->save();
-
-      $field->setSetting('default_image', [
-        'uuid' => $file->uuid(),
-        'alt' => (string) t('A generic silhouette of a person.'),
-        'title' => '',
-        'width' => 300,
-        'height' => 375,
-      ]);
-    }
-    catch (FileException $e) {
-      // Fail silently.
-    }
-  }
   // Set the default image for user profiles.
-  if ($field->getTargetEntityTypeId() === 'node' && $field->getName() === 'field_profile_image' && $field->isNew() && !\Drupal::isConfigSyncing()) {
-    $source = drupal_get_path('module', 'govcore_core') . '/images/default-profile.jpg';
-    $uri = 'public://default-profile.jpg';
+  if ($field->getTargetEntityTypeId() === 'user' && $field->getName() === 'user_picture' && $field->isNew() && !\Drupal::isConfigSyncing()) {
+    $source = \Drupal::service('extension.list.module')->getPath('govcore_core')  . '/images/default-avatar.png';
+    $uri = 'public://default-avatar.png';
 
     try {
       \Drupal::service('file_system')->copy($source, $uri, FileSystemInterface::EXISTS_ERROR);
@@ -393,54 +380,12 @@ function govcore_core_field_config_presave(FieldConfigInterface $field) {
         'uuid' => $file->uuid(),
         'alt' => (string) t('A generic silhouette of a person.'),
         'title' => '',
-        'width' => 300,
-        'height' => 375,
+        'width' => 140,
+        'height' => 140,
       ]);
     }
     catch (FileException $e) {
       // Fail silently.
     }
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_insert().
- */
-function govcore_core_node_type_insert($node_type) {
-  // Don't do anything during config sync.
-  if (\Drupal::isConfigSyncing()) {
-    return;
-  }
-
-  $type = $node_type->id();
-
-  // No point in continuing without an index to configure.
-  /** @var \Drupal\search_api\IndexInterface $index */
-  $index = Index::load('acquia_search_index');
-  if (empty($index)) {
-    return;
-  }
-
-  /** @var \Drupal\govcore_core\DisplayHelper $display_helper */
-  $display_helper = \Drupal::service('govcore.display_helper');
-
-  $field = $index->getField('rendered');
-  if ($field) {
-    $configuration = $field->getConfiguration();
-    $configuration['view_mode']['entity:node'][$type] = $display_helper->getPreferredMode('node', $type, ['search_index', 'full']);
-    $field->setConfiguration($configuration);
-    $index->save();
-  }
-
-  /** @var \Drupal\views\ViewEntityInterface $view */
-  $view = View::load('acquia_search');
-  if (empty($view)) {
-    return;
-  }
-
-  $display = &$view->getDisplay('default');
-  if ($display['display_options']['row']['type'] == 'search_api') {
-    $display['display_options']['row']['options']['view_modes']['entity:node'][$type] = $display_helper->getPreferredMode('node', $type, ['search_result', 'teaser']);
-    $view->save();
   }
 }

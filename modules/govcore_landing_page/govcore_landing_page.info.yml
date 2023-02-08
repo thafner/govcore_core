@@ -1,9 +1,0 @@
-name: 'Landing Page'
-package: GovCore
-core: 8.x
-core_version_requirement: '^8 || ^9'
-type: module
-description: 'Provides a Landing Page content type.'
-dependencies:
-  - govcore_core:govcore_core
-  - drupal:node

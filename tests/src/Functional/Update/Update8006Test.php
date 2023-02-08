@@ -13,9 +13,20 @@ class Update8006Test extends UpdatePathTestBase {
   /**
    * {@inheritdoc}
    */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setDatabaseDumpFiles() {
+    if (str_starts_with(\Drupal::VERSION, '10.')) {
+      $dump_file = 'drupal-9.4.0.bare.standard.php.gz';
+    }
+    else {
+      $dump_file = 'drupal-8.8.0.bare.standard.php.gz';
+    }
     $this->databaseDumpFiles = [
-      $this->getDrupalRoot() . '/core/modules/system/tests/fixtures/update/drupal-8.8.0.bare.standard.php.gz',
+      $this->getDrupalRoot() . "/core/modules/system/tests/fixtures/update/$dump_file",
       __DIR__ . '/../../../fixtures/Update8006Test.php.gz',
     ];
   }

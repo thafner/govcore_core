@@ -1,8 +1,0 @@
-uuid: a1be5ac3-fce2-4dd5-914b-eed12ce5043b
-langcode: en
-status: true
-dependencies: {  }
-id: date_only_medium
-label: 'Date Only Medium'
-locked: false
-pattern: 'F j, Y'

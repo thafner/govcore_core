@@ -18,10 +18,19 @@ class UpdatePathTest extends UpdatePathTestBase {
   /**
    * {@inheritdoc}
    */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setDatabaseDumpFiles() {
-    $this->databaseDumpFiles = [
-      __DIR__ . '/../../../fixtures/2.0.0-updated-drupal-8.8.0.php.gz',
-    ];
+    if (str_starts_with(\Drupal::VERSION, '10.')) {
+      $dump_file = __DIR__ . '/../../../fixtures/2.0.0-updated-drupal-9.4.0.php.gz';
+    }
+    else {
+      $dump_file = __DIR__ . '/../../../fixtures/2.0.0-updated-drupal-8.8.0.php.gz';
+    }
+    $this->databaseDumpFiles = [$dump_file];
   }
 
   /**

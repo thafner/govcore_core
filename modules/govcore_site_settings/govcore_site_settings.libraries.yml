@@ -1,5 +1,0 @@
-main:
-  version: VERSION
-  css:
-    theme:
-      css/govcore-site-settings.css: {}

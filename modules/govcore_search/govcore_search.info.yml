@@ -1,0 +1,9 @@
+name: 'GovCore Search'
+core_version_requirement: '^9.3 || ^10'
+type: module
+package: GovCore
+description: 'A basic but powerful set of default configuration for searching your site.'
+dependencies:
+  - govcore_core:govcore_core
+  - search_api:search_api
+  - drupal:views

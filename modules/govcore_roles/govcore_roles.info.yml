@@ -1,0 +1,8 @@
+name: 'GovCore Roles'
+core_version_requirement: '^9.3 || ^10'
+type: module
+package: GovCore
+description: 'Automatically manages user roles and permissions.'
+dependencies:
+  - drupal:node
+configure: govcore_roles.settings

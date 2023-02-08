@@ -1,0 +1,5 @@
+{
+    "name": "govcore/govcore_search",
+    "type": "drupal-module",
+    "description": "A basic but powerful set of default configuration for searching your site."
+}

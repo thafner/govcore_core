@@ -1,0 +1,27 @@
+govcore_roles.content_role:
+  type: mapping
+  label: 'Content role'
+  mapping:
+    enabled:
+      type: boolean
+      label: 'Enabled'
+    label:
+      type: string
+      label: 'Label'
+    permissions:
+      type: sequence
+      label: 'Permissions'
+      sequence:
+        type: string
+        label: 'Permission'
+
+govcore_roles.settings:
+  type: config_object
+  label: 'GovCore Roles settings'
+  mapping:
+    content_roles:
+      type: sequence
+      label: 'Content roles'
+      sequence:
+        type: govcore_roles.content_role
+        label: 'Content role'
