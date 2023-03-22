@@ -7,10 +7,3 @@ services:
       - '@plugin.cache_clearer'
     tags:
       - { name: drush.command }
-
-  govcore_core.commands:
-    class: \Drupal\govcore_core\Commands\GovCoreCoreCommands
-    arguments:
-      - '@govcore.update_manager'
-    tags:
-      - { name: drush.command }

@@ -10,6 +10,8 @@ use Drupal\Tests\BrowserTestBase;
  * @group govcore
  * @group govcore_core
  * @group govcore_page
+ *
+ * @requires module pathauto
  */
 class PathautoPatternTest extends BrowserTestBase {
 

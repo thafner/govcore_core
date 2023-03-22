@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\govcore_core\Unit;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -15,6 +16,7 @@ use Drupal\Tests\UnitTestCase;
  */
 class DisplayHelperTest extends UnitTestCase {
 
+  use ProphecyTrait;
   /**
    * @covers ::getNewComponents
    */

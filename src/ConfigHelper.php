@@ -139,9 +139,12 @@ class ConfigHelper extends InstallStorage {
    * {@inheritdoc}
    */
   public function deleteAll($prefix = '') {
+    $success = FALSE;
+
     foreach ($this->listAll($prefix) as $id) {
-      $this->delete($id);
+      $success = $success && $this->delete($id);
     }
+    return $success;
   }
 
   /**

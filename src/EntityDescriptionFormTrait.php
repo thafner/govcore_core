@@ -2,6 +2,7 @@
 
 namespace Drupal\govcore_core;
 
+use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -13,7 +14,7 @@ trait EntityDescriptionFormTrait {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    /** @var \Drupal\Core\Entity\EntityInterface|\Drupal\Core\Entity\EntityDescriptionInterface $entity */
+    /** @var \Drupal\Core\Entity\EntityDescriptionInterface $entity */
     $entity = $this->getEntity();
 
     $form = parent::form($form, $form_state);
@@ -35,10 +36,11 @@ trait EntityDescriptionFormTrait {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    $this->getEntity()
-      ->setDescription($form_state->getValue('description'));
+    /** @var \Drupal\Core\Entity\EntityDescriptionInterface $entity */
+    $entity = $this->getEntity();
+    $entity->setDescription($form_state->getValue('description'));
 
-    parent::save($form, $form_state);
+    $status = parent::save($form, $form_state);
 
     // The help text block is very likely to be render cached, so invalidate the
     // relevant cache tag.
@@ -46,6 +48,7 @@ trait EntityDescriptionFormTrait {
     // @see govcore_core_block_view_alter()
     // @see govcore_core_help().
     $this->cacheTagInvalidator()->invalidateTags(['block_view:help_block']);
+    return $status;
   }
 
   /**
@@ -55,7 +58,10 @@ trait EntityDescriptionFormTrait {
    *   The cache tag invalidator.
    */
   private function cacheTagInvalidator() {
-    return @$this->cacheTagInvalidator ?: \Drupal::service('cache_tags.invalidator');
+    if (isset($this->cacheTagInvalidator) && $this->cacheTagInvalidator instanceof CacheTagsInvalidatorInterface) {
+      return $this->cacheTagInvalidator;
+    }
+    return \Drupal::service('cache_tags.invalidator');
   }
 
 }

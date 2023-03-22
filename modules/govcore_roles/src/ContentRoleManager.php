@@ -8,29 +8,34 @@ use Drupal\user\PermissionHandlerInterface;
 
 /**
  * A service for managing the configuration and deployment of content roles.
+ *
+ * @internal
+ *   This is an internal part of GovCore Roles and may be changed or removed
+ *   at any time without warning. External code should not interact with this
+ *   class.
  */
-class ContentRoleManager {
+final class ContentRoleManager {
 
   /**
    * The config factory.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $configFactory;
+  private $configFactory;
 
   /**
    * The node type entity storage handler.
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $nodeTypeStorage;
+  private $nodeTypeStorage;
 
   /**
-   * The permission handler service.
+   * The permissions handler service.
    *
    * @var \Drupal\user\PermissionHandlerInterface
    */
-  protected $permissionHandler;
+  private $permissionsHandler;
 
   /**
    * ContentRoleManager constructor.
@@ -39,13 +44,13 @@ class ContentRoleManager {
    *   The config factory.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\user\PermissionHandlerInterface $permission_handler
-   *   The permission handler service.
+   * @param \Drupal\user\PermissionHandlerInterface $permissions_handler
+   *   The permissions handler service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, PermissionHandlerInterface $permission_handler = NULL) {
+  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, PermissionHandlerInterface $permissions_handler) {
     $this->configFactory = $config_factory;
     $this->nodeTypeStorage = $entity_type_manager->getStorage('node_type');
-    $this->permissionHandler = $permission_handler ?: \Drupal::service('user.permissions');
+    $this->permissionsHandler = $permissions_handler;
   }
 
   /**
@@ -70,7 +75,7 @@ class ContentRoleManager {
     $role['permissions'] = array_merge($role['permissions'], $permissions);
     $config->set($key, $role)->save();
 
-    $all_permissions = array_keys($this->permissionHandler->getPermissions());
+    $all_permissions = array_keys($this->permissionsHandler->getPermissions());
 
     if ($role['enabled']) {
       // Look up all node type IDs.
@@ -78,9 +83,8 @@ class ContentRoleManager {
 
       foreach ($node_types as $node_type) {
         $permissions = str_replace('?', $node_type, $role['permissions']);
-        // Filter out any undefined permissions.
+        // Only grant permissions that actually exist.
         $permissions = array_intersect($permissions, $all_permissions);
-
         user_role_grant_permissions($node_type . '_' . $role_id, $permissions);
       }
     }

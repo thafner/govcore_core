@@ -27,10 +27,3 @@ user.role.*.third_party.govcore_core:
     description:
       type: string
       label: 'Description'
-
-govcore_core.versions:
-  type: sequence
-  label: 'Extension versions'
-  sequence:
-    type: string
-    label: 'Semantic version number'

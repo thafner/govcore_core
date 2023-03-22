@@ -11,6 +11,8 @@ use Drupal\views\Entity\View;
  *
  * @group govcore_search
  * @group orca_public
+ *
+ * @requires module search_api_db
  */
 class SearchTest extends BrowserTestBase {
 

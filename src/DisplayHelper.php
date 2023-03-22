@@ -56,6 +56,7 @@ class DisplayHelper {
     $displays = $this->entityTypeManager
       ->getStorage('entity_view_display')
       ->getQuery()
+      ->accessCheck(TRUE)
       ->execute();
 
     foreach ($preferences as $view_mode) {

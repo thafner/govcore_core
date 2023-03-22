@@ -6,3 +6,8 @@ description: 'Provides a "Basic Page" content type that is, indeed, very basic.'
 dependencies:
   - govcore_core:govcore_core
   - drupal:node
+
+# Information added by Drupal.org packaging script on 2023-01-10
+version: '6.0.0'
+project: 'govcore_core'
+datestamp: 1673383964

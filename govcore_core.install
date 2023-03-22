@@ -2,11 +2,10 @@
 
 /**
  * @file
- * Contains install and update routines for GovCore.
+ * Contains install and update functions for GovCore Core.
  */
 
-use Drupal\govcore_core\ConfigHelper as Config;
-use Drupal\govcore_core\UpdateManager;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Implements hook_requirements().
@@ -35,123 +34,34 @@ function govcore_core_install() {
     return;
   }
 
-  // Record all module version numbers, including our own, in config.
-  $modules = array_keys(\Drupal::moduleHandler()->getModuleList());
-  array_push($modules, 'govcore_core');
-  govcore_core_modules_installed($modules);
-
-  // Mark core view modes as internal.
-  govcore_core_update_8002();
-}
-
-/**
- * Removed in GovCore 8.x-2.06.
- *
- * Formerly created the govcore_core settings object.
- */
-function govcore_core_update_8001() {
-}
-
-/**
- * Marks certain node view modes as internal.
- */
-function govcore_core_update_8002() {
-  $storage = Drupal::entityTypeManager()->getStorage('entity_view_mode');
-  $view_modes = $storage->loadMultiple([
-    'node.rss',
-    'node.search_index',
-  ]);
-  /** @var \Drupal\Core\Entity\EntityViewModeInterface $view_mode */
-  foreach ($view_modes as $view_mode) {
-    $view_mode->setThirdPartySetting('govcore_core', 'internal', TRUE);
-    $storage->save($view_mode);
-  }
-}
-
-/**
- * Marks all entity token view modes as internal.
- */
-function govcore_core_update_8003() {
-  if (\Drupal::moduleHandler()->moduleExists('token')) {
+  // Ensure our Token-specific modifications take effect if Token is already
+  // installed.
+  if (Drupal::moduleHandler()->moduleExists('token')) {
     govcore_core_modules_installed(['token']);
   }
 }
 
 /**
- * Clears the entity type definition cache.
+ * Removes the govcore_core.versions config.
  */
-function govcore_core_update_8004() {
-  \Drupal::entityTypeManager()->clearCachedDefinitions();
+function govcore_core_update_9001(): void {
+  Drupal::configFactory()
+    ->getEditable('govcore_core.versions')
+    ->delete();
 }
 
 /**
- * Installs GovCore Roles.
+ * Uninstalls the standalone Acquia Telemetry module.
  */
-function govcore_core_update_8005() {
-  $source = \Drupal::configFactory()
-    ->getEditable('govcore_core.settings');
+function govcore_core_update_9002(): TranslatableMarkup {
+  Drupal::service('module_installer')->uninstall(['acquia_telemetry']);
 
-  $roles = $source->get('content_roles');
-
-  // If any content role is enabled, install GovCore Roles and migrate
-  // the content role configuration from GovCore Core.
-  foreach ($roles as $role) {
-    if ($role['enabled']) {
-      \Drupal::service('module_installer')->install(['govcore_roles']);
-
-      \Drupal::configFactory()
-        ->getEditable('govcore_roles.settings')
-        ->set('content_roles', $roles)
-        ->save();
-
-      break;
-    }
-  }
-  $source->clear('content_roles')->save();
+  return t("The Acquia Telemetry module has been uninstalled. You can remove it from your project's composer.json with <code>composer remove drupal/acquia_telemetry-acquia_telemetry</code>");
 }
 
 /**
- * Records all modules' semantic version numbers in config.
+ * Implements hook_update_last_removed().
  */
-function govcore_core_update_8006() {
-  $modules = Drupal::moduleHandler()->getModuleList();
-
-  $keys = array_keys($modules);
-  $values = array_fill(0, count($keys), UpdateManager::VERSION_UNKNOWN);
-
-  \Drupal::configFactory()
-    ->getEditable('govcore.versions')
-    ->merge(array_combine($keys, $values))
-    ->save();
-}
-
-/**
- * Renames the govcore.versions config object.
- */
-function govcore_core_update_8007() {
-  $config_factory = Drupal::configFactory();
-
-  $old = $config_factory->getEditable('govcore.versions');
-  $new = $config_factory->getEditable(UpdateManager::CONFIG_NAME);
-
-  // If the new config object didn't exist by the time this update was executed,
-  // just rename the old config object and call it a day.
-  if ($new->isNew()) {
-    $config_factory->rename($old->getName(), $new->getName());
-  }
-  else {
-    // Meekly merge the old data into the old data (i.e., the new data will take
-    // precedence), then delete the old config object.
-    $new->setData($new->get() + $old->get())->save();
-    $old->delete();
-  }
-}
-
-/**
- * Creates the Long (12-hour) date format if it does not already exist.
- */
-function govcore_core_update_8008() {
-  Config::forModule('govcore_core')
-    ->getEntity('date_format', 'long_12h')
-    ->save();
+function govcore_core_update_last_removed(): int {
+  return 8008;
 }

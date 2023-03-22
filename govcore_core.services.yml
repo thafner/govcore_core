@@ -21,11 +21,3 @@ services:
       -
         name: access_check
         applies_to: _is_administrator
-
-  govcore.update_manager:
-    class: '\Drupal\govcore_core\UpdateManager'
-    arguments:
-      - '@container.namespaces'
-      - '@class_resolver'
-      - '@config.factory'
-      - '@extension.list.module'

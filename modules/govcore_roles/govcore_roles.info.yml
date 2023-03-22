@@ -6,3 +6,8 @@ description: 'Automatically manages user roles and permissions.'
 dependencies:
   - drupal:node
 configure: govcore_roles.settings
+
+# Information added by Drupal.org packaging script on 2023-01-10
+version: '6.0.0'
+project: 'govcore_core'
+datestamp: 1673383964

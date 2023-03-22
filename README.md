@@ -1,7 +1,7 @@
 # GovCore Core
 GovCore Core provides shared base functionality and APIs for the GovCore
-distribution of Drupal 8. You probably won't have a reason to install it
-unless another module requires this one.
+distribution of Drupal. You probably won't have a reason to install it unless
+another module requires it.
 
 ### Components
 GovCore Core's components are not enabled by default. You can install them
@@ -28,36 +28,3 @@ type.
 #### GovCore Search (`govcore_search`)
 Uses [Search API](https://drupal.org/project/search_api) to provide a standard,
 turnkey site-wide search index of all your site's content.
-
-### Installation
-This component can only be installed using Composer. To add it to your Drupal
-code base:
-
-```
-composer config repositories.drupal composer https://packages.drupal.org/8
-composer require govcore/govcore_core
-```
-
-#### Updates
-GovCore Core and its components use the normal Drupal database update system
-as often as possible. However, there are occasionally certain updates which
-touch configuration and may change the functionality of your site. These updates
-are optional, and are performed by a special utility at the command line. This
-utility is compatible with both
-[Drupal Console](https://github.com/hechoendrupal/drupal-console) and
-[Drush](https://drush.org) 9 or later.
-
-To run updates using Drush 9:
-
-`
-drush update:govcore
-`
-
-With Drupal Console:
-
-`
-drupal update:govcore
-`
-
-#### Known Issues
-None yet.

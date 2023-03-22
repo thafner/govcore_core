@@ -19,7 +19,7 @@ class AdministrativeRoleCheckTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['system', 'user'];
+  protected static $modules = ['system', 'user'];
 
   /**
    * @covers ::access

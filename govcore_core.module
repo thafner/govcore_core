@@ -12,11 +12,11 @@ use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityDescriptionInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldConfigInterface;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\field\FieldConfigInterface;
 use Drupal\file\Entity\File;
 use Drupal\govcore_core\Element as ElementHelper;
 use Drupal\govcore_core\Entity\EntityFormMode;
@@ -25,7 +25,6 @@ use Drupal\govcore_core\Entity\Role;
 use Drupal\govcore_core\Form\RoleForm;
 use Drupal\govcore_core\OverrideHelper as Override;
 use Drupal\govcore_core\Plugin\views\filter\Bundle;
-use Drupal\govcore_core\UpdateManager;
 
 /**
  * Implements hook_entity_base_field_info_alter().
@@ -53,20 +52,12 @@ function govcore_core_local_tasks_alter(array &$local_tasks) {
  * Implements hook_library_info_alter().
  */
 function govcore_core_library_info_alter(array &$libraries, $extension) {
-  if ($extension == 'seven') {
+  if ($extension === 'seven') {
+    $file_url_generator = Drupal::service('file_url_generator');
+
     $url = Drupal::service('extension.list.module')->getPath('govcore_core') . '/css/admin-list.grid.css';
-    if (\Drupal::hasService('file_url_generator')) {
-      $file_url_generator = Drupal::service('file_url_generator');
-      $url = $file_url_generator->generateAbsoluteString($url);
-      $url = $file_url_generator->transformRelative($url);
-    }
-    else {
-      // @todo Drop this code when Drupal 9.3 is the minimum supported version of core.
-      /** @phpstan-ignore-next-line */
-      $url = file_create_url($url);
-      /** @phpstan-ignore-next-line */
-      $url = file_url_transform_relative($url);
-    }
+    $url = $file_url_generator->generateAbsoluteString($url);
+    $url = $file_url_generator->transformRelative($url);
 
     $libraries['global-styling']['css']['component'][$url] = [];
   }
@@ -245,20 +236,6 @@ function govcore_core_modules_installed(array $modules) {
     return;
   }
 
-  // Record the semantic version of every module in config.
-  $versions = Drupal::configFactory()->getEditable(UpdateManager::CONFIG_NAME);
-
-  /** @var \Drupal\govcore_core\UpdateManager $update_manager */
-  $update_manager = \Drupal::service('govcore.update_manager');
-
-  foreach ($modules as $module) {
-    $versions->set($module, $update_manager->getVersion($module));
-  }
-  // Sort the list by key.
-  $versions_sorted = $versions->getRawData();
-  ksort($versions_sorted);
-  $versions->setData($versions_sorted)->save();
-
   if (in_array('token', $modules, TRUE)) {
     $view_modes = [];
     foreach (\Drupal::entityTypeManager()->getDefinitions() as $entity_type) {
@@ -325,32 +302,6 @@ function govcore_core_form_alter(array &$form, FormStateInterface $form_state) {
       $form['revision_information']['#access'] = $form_mode->getThirdPartySetting('govcore_core', 'revision_ui', TRUE);
     }
   }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function govcore_core_form_system_modules_alter(array &$form) {
-  // This rule prevents acquia_telemetry module's description from increasing
-  // the page width.
-  $css = "#edit-modules-acquia-telemetry-enable-description { white-space: normal; overflow: hidden; }";
-  $form['#attached']['html_head'][] = [
-    [
-      '#tag' => 'style',
-      '#value' => $css,
-    ],
-    'acquia-telemetry-css',
-  ];
-}
-
-/**
- * Rebuilds the service container.
- */
-function govcore_core_rebuild_container() {
-  require_once \Drupal::root() . '/core/includes/utility.inc';
-  $class_loader = \Drupal::service('class_loader');
-  $request = \Drupal::request();
-  drupal_rebuild($class_loader, $request);
 }
 
 /**

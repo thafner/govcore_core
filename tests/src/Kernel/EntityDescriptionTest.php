@@ -15,7 +15,7 @@ class EntityDescriptionTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['govcore_core', 'user'];
+  protected static $modules = ['govcore_core', 'user'];
 
   /**
    * Data provider for ::testEntityDescription().
@@ -51,7 +51,7 @@ class EntityDescriptionTest extends KernelTestBase {
       ->create($values);
 
     $this->assertInstanceOf(EntityDescriptionInterface::class, $entity);
-    /** @var \Drupal\Core\Entity\EntityInterface|\Drupal\Core\Entity\EntityDescriptionInterface $entity */
+    /** @var \Drupal\Core\Entity\EntityDescriptionInterface $entity */
     $description = $this->randomString(32);
     $this->assertEmpty($entity->getDescription());
     $entity->setDescription($description);

@@ -11,6 +11,8 @@ use Drupal\KernelTests\KernelTestBase;
  * @group govcore_contact_form
  * @group govcore_core
  * @group govcore
+ *
+ * @requires module contact_storage
  */
 class InstallTest extends KernelTestBase {
 
@@ -32,7 +34,8 @@ class InstallTest extends KernelTestBase {
 
     // The sitewide contact form does not exist, so the install hook should not
     // try to create an alias for it.
-    module_load_include('install', 'govcore_contact_form');
+    $this->container->get('module_handler')
+      ->loadInclude('govcore_contact_form', 'install');
     // The hook will try to modify the contact form if config is not syncing.
     $this->container->get('config.installer')->setSyncing(TRUE);
     govcore_contact_form_install();

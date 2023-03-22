@@ -9,7 +9,6 @@ use Drupal\user\Entity\Role;
 /**
  * @group govcore
  * @group govcore_roles
- * @group orca_public
  *
  * @requires module quickedit
  */
@@ -84,7 +83,7 @@ class ContentRoleManagerTest extends KernelTestBase {
       'delete any page content',
     ];
     foreach ($expected_reviewer_permissions as $permission) {
-      $this->assertTrue($role->hasPermission($permission));
+      $this->assertContains($permission, $role->getPermissions());
     }
     $this->assertFalse($role->isAdmin());
 

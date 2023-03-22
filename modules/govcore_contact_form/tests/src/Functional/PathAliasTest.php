@@ -8,6 +8,8 @@ use Drupal\Tests\BrowserTestBase;
  * @group govcore
  * @group govcore_core
  * @group govcore_contact_form
+ *
+ * @requires module contact_storage
  */
 class PathAliasTest extends BrowserTestBase {
 

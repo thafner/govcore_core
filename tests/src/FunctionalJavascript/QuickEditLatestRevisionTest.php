@@ -22,7 +22,7 @@ class QuickEditLatestRevisionTest extends QuickEditJavascriptTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'block',
     'content_moderation',
     'govcore_core',

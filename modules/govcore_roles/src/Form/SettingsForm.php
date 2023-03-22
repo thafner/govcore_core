@@ -56,13 +56,17 @@ class SettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('govcore_roles.settings')->get('content_roles');
 
+    $permission_map = function ($permission) {
+      return str_replace('?', '', $permission);
+    };
+
     foreach ($config as $key => $role) {
-      $role['permissions'] = str_replace('?', '', $role['permissions']);
+      $role['permissions'] = array_map($permission_map, $role['permissions']);
 
       $form['content_roles'][$key] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Provide @label role for new content types', [
-          '@label' => str_replace('?', '', $role['label']),
+          '@label' => $permission_map($role['label']),
         ]),
         '#default_value' => $role['enabled'],
         '#description' => $this->t('Gives permission to @permissions', [
